@@ -1,0 +1,72 @@
+import numpy as np
+import cv2 as cv
+import glob
+import random
+import os
+
+class deform:
+  def __init__(self,image):
+      self.__fonts = glob.glob('./fonts/*.ttf')
+      self.image = image
+
+  def gaussian_blur(self):
+    kernel = (1,1)
+    return cv.GaussianBlur(self.image,kernel, 0)
+
+  def median_blur(self):
+    return cv.medianBlur(self.image,3)
+
+  def gaussian_noise(self):
+    mean = 0
+    var = 0.1
+    sigma = var**0.5
+    gauss = np.random.normal(mean,sigma,self.image.shape)
+    gauss.reshape(self.image.shape)
+    return self.image + gauss
+
+  def salt_pepper_noise(self,):
+    sp = np.copy(self.image)
+    amt = 5e-01
+    coords = [np.random.randint(0,i-1,int(amt*self.image.size)) for i in self.image.shape]
+    sp[coords] = 255
+    return sp
+
+  def fonts(self,num_of_fonts):
+    """
+
+    :param num_of_fonts: the number of fonts to choose from
+    :return: selected choices
+    """
+    choices = random.choices(self.__fonts,5)
+    return choices
+
+
+  def all_fonts(self):
+    li = []
+    for font in self.__fonts:
+      li.append(os.path.basename(font))
+    return li
+
+
+  def add_deformity(self):
+    """
+
+    :param image: raw image
+    :return: deformed image
+    """
+    nums=random.choices(range(4),k=2)
+    switch = {
+        0:'gaussian_blur',
+        1:'median_blur',
+        2:'gaussian_noise',
+        3:'salt_pepper_noise'
+    }
+    for n in nums:
+      deformity=switch.get(n)
+      if deformity == 'gaussian_blur': return gaussian_blur(self.image)
+      elif deformity == 'median_blur': return median_blur(self.image)
+      elif deformity == 'gaussian_noise': return gaussian_noise(self.image)
+      else:
+        for i in range(2):
+          image = salt_pepper_noise(self.image)
+        return self.image
