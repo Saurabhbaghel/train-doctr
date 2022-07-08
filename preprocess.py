@@ -6,7 +6,7 @@ import os
 
 class deform:
   def __init__(self):
-      self.__fonts = glob.glob('./fonts/*.ttf')
+      self.fonts = glob.glob('./fonts/*.ttf')
       
 
   def gaussian_blur(self,image):
@@ -37,13 +37,13 @@ class deform:
     :param num_of_fonts: the number of fonts to choose from
     :return: selected choices
     """
-    choices = random.choices(self.__fonts,5)
+    choices = random.choices(self.fonts,5)
     return choices
 
 
   def all_fonts(self):
     li = []
-    for font in self.__fonts:
+    for font in self.fonts:
       li.append(os.path.basename(font))
     return li
 
@@ -63,10 +63,10 @@ class deform:
     }
     for n in nums:
       deformity=switch.get(n)
-      if deformity == 'gaussian_blur': return gaussian_blur(image)
-      elif deformity == 'median_blur': return median_blur(image)
-      elif deformity == 'gaussian_noise': return gaussian_noise(image)
+      if deformity == 'gaussian_blur': return self.gaussian_blur(image)
+      elif deformity == 'median_blur': return self.median_blur(image)
+      elif deformity == 'gaussian_noise': return self.gaussian_noise(image)
       else:
         for i in range(2):
-          image = salt_pepper_noise(image)
+          image = self.salt_pepper_noise(image)
         return image
