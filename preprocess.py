@@ -10,23 +10,23 @@ class deform:
       
 
   def gaussian_blur(self,image):
-    kernel = (1,1)
+    kernel = (9,9)
     return cv.GaussianBlur(image,kernel, 0)
 
   def median_blur(self,image):
-    return cv.medianBlur(image,3)
+    return cv.medianBlur(image,7)
 
   def gaussian_noise(self,image):
     mean = 0
     var = 0.1
-    sigma = var**0.5
+    sigma = var**0.1
     gauss = np.random.normal(mean,sigma,image.shape)
     gauss.reshape(image.shape)
     return image + gauss
 
   def salt_pepper_noise(self,image):
     sp = np.copy(image)
-    amt = 5e-01
+    amt = 2e-01
     coords = [np.random.randint(0,i-1,int(amt*image.size)) for i in image.shape]
     sp[coords] = 255
     return sp
