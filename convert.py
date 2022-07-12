@@ -45,7 +45,7 @@ def generator(text_dir,out_dir):
             font_dest = Path(FONT)
             shutil.copy(font_add, font_dest)
             font = ImageFont.truetype(FONT,50)
-            img = Image.new('RGBA',(500,100),(255,255,255))
+            img = Image.new('RGBA',(1000,100),(255,255,255))
             draw = ImageDraw.Draw(img)
             draw.text((0,10),word,fill=(0,0,0),font = font)
             img = np.array(img)
