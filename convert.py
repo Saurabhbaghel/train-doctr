@@ -60,9 +60,10 @@ def create_dataset(train: bool,out_dir,text_files):
             font_dest = Path(FONT)
             shutil.copy(font_add, font_dest)
             font = ImageFont.truetype(FONT,50)
-            img = Image.new('RGBA',(1000,100),(255,255,255))
+            length = len(word)*50
+            img = Image.new('RGBA',(length,100),(255,255,255))
             draw = ImageDraw.Draw(img)
-            draw.text((0,10),word,fill=(0,0,0),font = font)
+            draw.text((10,15),word,fill=(0,0,0),font = font)
             img = np.array(img)
             img = new_img.add_deformity(img)
             img_loc = os.path.join(imgs_out_dir, f'img_{counter}.png')
