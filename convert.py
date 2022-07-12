@@ -27,15 +27,23 @@ def create_dataset(train: bool,out_dir,text_files):
     words_dict = dict()
     counter = 1
     if train:
-        train_path = os.path.join(out_dir,'train')
-        imgs_out_dir = os.path.join(train_path,'images')
-        a = 0
-        b = len(text_files)//2
+      if not os.path.isdir(f"{out_dir}/train"):
+        os.mkdir(f"{out_dir}/train")
+      train_path = os.path.join(out_dir,'train')
+      if not os.path.isdir(f"{train_path}/images"):
+        os.mkdir(f"{train_path}/images")
+      imgs_out_dir = os.path.join(train_path,'images')
+      a = 0
+      b = int(len(text_files)*0.7)
     else:
-        val_path = os.path.join(out_dir,'val')
-        imgs_out_dir = os.path.join(val_path,'images')
-        a = len(text_files)//2
-        b = len(text_files)
+      if not os.path.isdir(f"{out_dir}/val"):
+        os.mkdir(f"{out_dir}/val")
+      val_path = os.path.join(out_dir,'val')
+      if not os.path.isdir(f"{val_path}/images"):
+        os.mkdir(f"{val_path}/images")
+      imgs_out_dir = os.path.join(val_path,'images')
+      a = int(len(text_files)*0.7)
+      b = len(text_files)
 
 
     for text in tqdm(text_files[a:b]):
@@ -44,9 +52,9 @@ def create_dataset(train: bool,out_dir,text_files):
         for word in tqdm(words):
             new_img = deform()
             FONT = random.choice(new_img.all_fonts())
-            print(f'Font : {FONT}')
+            # print(f'Font : {FONT}')
             FONTS_ADD = os.path.dirname(new_img.fonts[0])
-            print(f'font add : {os.path.join(FONTS_ADD,FONT)}')
+            # print(f'font add : {os.path.join(FONTS_ADD,FONT)}')
             # subprocess.run(f'cp {FONT_ADD} .')
             font_add = os.path.join(FONTS_ADD, FONT)
             font_dest = Path(FONT)
@@ -61,6 +69,7 @@ def create_dataset(train: bool,out_dir,text_files):
             words_dict[os.path.basename(img_loc)] = word
             cv.imwrite(img_loc,img)
             counter += 1
+            print(counter)
             os.remove(FONT)
         f.close()
     out_file = json.dumps(words_dict,ensure_ascii=False)
@@ -83,12 +92,12 @@ def generator(text_dir,out_dir):
 
     text_files = glob.glob(text_dir+'/*.txt')
     print(f'Files identified {text_files}')
-    if not os.path.isdir('train'):
-        os.mkdir('train')
-        train_path = os.path.join(out_dir,'train')
-    if not os.path.isdir('val'):
-        os.mkdir('val')
-        val_path = os.path.join(out_dir,'val')
+    # if not os.path.isdir('train'):
+    #     os.mkdir('train')
+    #     train_path = os.path.join(out_dir,'train')
+    # if not os.path.isdir('val'):
+    #     os.mkdir('val')
+    #     val_path = os.path.join(out_dir,'val')
 
     # creating training dataset
     create_dataset(train=True,out_dir=out_dir,text_files=text_files)
