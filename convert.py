@@ -49,7 +49,7 @@ def create_dataset(train: bool,out_dir,text_files):
     for text in tqdm(text_files[a:b]):
         f = open(text,'r')
         words=f.readline().strip().split(' ')
-        for word in tqdm(words):
+        for word in words:
             new_img = deform()
             FONT = random.choice(new_img.all_fonts())
             # print(f'Font : {FONT}')
