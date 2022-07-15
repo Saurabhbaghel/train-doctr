@@ -63,7 +63,7 @@ def create_dataset(train: bool,out_dir,text_files):
             W, H = (450,100)
             img = Image.new('RGBA',(W,H),(255,255,255))
             draw = ImageDraw.Draw(img)
-            draw.text((120,10),word,fill=(0,0,0),font = font, align="center")
+            draw.text((25,10),word,fill=(0,0,0),font = font, align="center")
             img = np.array(img)
             img = new_img.add_deformity(img)
             img_loc = os.path.join(imgs_out_dir, f'img_{counter}.png')
